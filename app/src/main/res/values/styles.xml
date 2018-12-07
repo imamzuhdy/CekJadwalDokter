@@ -1,11 +1,15 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/common_google_signin_btn_text_dark_disabled</item>
-        <item name="colorPrimaryDark">@color/common_google_signin_btn_text_dark_disabled</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorForeground">@color/foreground_material_dark</item>
         <item name="android:colorBackground">@color/background_material_dark</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
 
         <!-- Customize your theme here. -->
     </style>

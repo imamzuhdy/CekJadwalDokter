@@ -6,6 +6,11 @@
             android:checked="false"
             android:icon="@drawable/ic_beranda"
             android:title="Beranda" />
+        <item
+            android:id="@+id/akun"
+            android:checked="false"
+            android:icon="@drawable/ic_person"
+            android:title="Akun" />
 
     </group>
 
@@ -17,7 +22,7 @@
             <item
             android:id="@+id/musik"
             android:checked="false"
-            android:icon="@drawable/help"
+            android:icon="@drawable/musik"
             android:title="Musik" />
             <item
                 android:id="@+id/bantuan"
@@ -29,6 +34,11 @@
                 android:checked="false"
                 android:icon="@drawable/ic_about"
                 android:title="Tentang" />
+            <item
+                android:id="@+id/logOut"
+                android:checked="false"
+                android:icon="@drawable/ic_person"
+                android:title="Keluar" />
 
         </menu>
     </item>

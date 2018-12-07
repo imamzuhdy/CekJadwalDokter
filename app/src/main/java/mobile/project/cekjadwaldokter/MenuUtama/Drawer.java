@@ -1,12 +1,13 @@
 package mobile.project.cekjadwaldokter.MenuUtama;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -15,16 +16,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import mobile.project.cekjadwaldokter.DaftarDokterSpesialis.List_spesialis_Advent;
+import mobile.project.cekjadwaldokter.Akun.LoginActivity;
+import mobile.project.cekjadwaldokter.DaftarDokterSpesialis.ListDokterSpesialis;
+import mobile.project.cekjadwaldokter.Layanan.Bantuan;
+import mobile.project.cekjadwaldokter.Layanan.Tentang;
 import mobile.project.cekjadwaldokter.R;
 
 public class Drawer extends AppCompatActivity {
+
+    //loginsession
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Pass = "passKey";
+    public static final String Emaill = "emailKey";
+    SharedPreferences sharedpreferences;
 
     //Mendefinisikan variabel
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
     boolean DoubleBackToExit = false;
 
     //flipper
@@ -35,10 +44,8 @@ public class Drawer extends AppCompatActivity {
         setContentView(R.layout.activity_drawer);
 
         //flipper
-        int images[] = {R.drawable.indonesia_sehat, R.drawable.dbd, R.drawable.germas};
-
+        int images[] = {R.drawable.ic_beranda, R.drawable.ic_beranda, R.drawable.ic_about};
         v_flipper = findViewById(R.id.v_flipper);
-
         for (int image : images) {
             flipperImage(image);
         }
@@ -69,14 +76,27 @@ public class Drawer extends AppCompatActivity {
                     case R.id.musik:
                         Intent intent1 = new Intent(Drawer.this, Musik.class);
                         startActivity(intent1);
-                        finish();
                         return true;
                     case R.id.bantuan:
-                        Toast.makeText(getApplicationContext(), "Bantuan telah dipilih", Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(Drawer.this, Bantuan.class);
+                        startActivity(intent2);
                         return true;
                     case R.id.tentang:
-                        Toast.makeText(getApplicationContext(), "Bantuan telah dipilih", Toast.LENGTH_SHORT).show();
+                        Intent intent3 = new Intent(Drawer.this, Tentang.class);
+                        startActivity(intent3);
                         return true;
+                    case R.id.logOut:{
+                        Intent intent4 = new Intent(Drawer.this, LoginActivity.class);
+                        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.remove(Emaill);
+                        editor.remove(Pass);
+                        editor.commit(); // commit changes
+
+                        startActivity(intent4);
+                        finish();
+                        return true;
+                    }
                     default:
                         Toast.makeText(getApplicationContext(), "Kesalahan Terjadi ", Toast.LENGTH_SHORT).show();
                         return true;
@@ -102,38 +122,26 @@ public class Drawer extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         //memanggil synstate
         actionBarDrawerToggle.syncState();
-
     }
 
-    public void BackPress(){
-        if (DoubleBackToExit){
+    boolean doubleBackToExitPressedOnce = false;
+    public void onBackPressed(){
+        if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
         }
-    }
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Keluar")
-                .setMessage("Yakin Ingin Keluar?")
-                .setPositiveButton("Ya", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                    }
 
-                })
-                .setNegativeButton("Tidak", null)
-                .show();
-    }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Tekan Kembali Untuk Keluar Aplikasi", Toast.LENGTH_SHORT).show();
 
-    public void advent(View view) {
-        Intent intent = new Intent(Drawer.this, List_spesialis_Advent.class);
-        startActivity(intent);
-    }
+        new Handler().postDelayed(new Runnable() {
 
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
     public void flipperImage (int image){
         ImageView imageView = new ImageView(this);
@@ -152,31 +160,59 @@ public class Drawer extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void KlikDadi(View view) {
-        Intent intent = new Intent(Drawer.this, List_spesialis_Advent.class);
-        String dadi = null;
-        intent.putExtra("dadi", dadi);
+    public void KlikBumiWaras(View view) {
+        Intent intent = new Intent(Drawer.this, ListDokterSpesialis.class);
+        Bundle b = new Bundle();
+        String string = "bumiwaras";
+        b.putString("key", string);
+        String string1 = "Dokter Spesialis RS. Bumi Waras";
+        b.putString("key1", string1);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
     public void KlikImanuel(View view) {
-        Intent intent = new Intent(Drawer.this, List_spesialis_Advent.class);
-        String imanuel = null;
-        intent.putExtra("imanuel", imanuel);
+        Intent intent = new Intent(Drawer.this, ListDokterSpesialis.class);
+        Bundle b = new Bundle();
+        String string = "imanuel";
+        b.putString("key", string);
+        String string1 = "Dokter Spesialis RS. Imanuel";
+        b.putString("key1", string1);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
     public void KlikMoeloek(View view) {
-        Intent intent = new Intent(Drawer.this, List_spesialis_Advent.class);
-        String moeloek = null;
-        intent.putExtra("moeloek", moeloek);
+        Intent intent = new Intent(Drawer.this, ListDokterSpesialis.class);
+        Bundle b = new Bundle();
+        String string = "moeloek";
+        b.putString("key", string);
+        String string1 = "Dokter Spesialis RS. Abdul Moeloek";
+        b.putString("key1", string1);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
     public void KlikDKT(View view) {
-        Intent intent = new Intent(Drawer.this, List_spesialis_Advent.class);
-        String dkt = null;
-        intent.putExtra("dkt", dkt);
+        Intent intent = new Intent(Drawer.this, ListDokterSpesialis.class);
+        Bundle b = new Bundle();
+        String string = "dkt";
+        b.putString("key", string);
+        String string1 = "Dokter Spesialis RS. DKT";
+        b.putString("key1", string1);
+        intent.putExtras(b);
         startActivity(intent);
+    }
+
+    public void advent(View view) {
+        Intent intent = new Intent(Drawer.this, ListDokterSpesialis.class);
+        Bundle b = new Bundle();
+        String string = "advent";
+        b.putString("key", string);
+        String string1 = "Dokter Spesialis RS. Advent";
+        b.putString("key1", string1);
+        intent.putExtras(b);
+        startActivity(intent);
+
     }
 }
